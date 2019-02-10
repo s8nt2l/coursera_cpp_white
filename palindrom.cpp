@@ -10,7 +10,6 @@ bool isPalindrom(string s){
     return true;
 }
 
-//
 int main(){
     string s;
     cin >> s;
