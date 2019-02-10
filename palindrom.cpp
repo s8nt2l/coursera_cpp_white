@@ -2,30 +2,18 @@
 #include <vector>
 using namespace std;
 
-vector <string> PalindromFilter(vector<string> words, int minLength){
-    vector <string> result;
-    bool v = 1;
-    for(int i = 0; i < words.size(); i++){
-        for(int j = 0; j < words[i].length() / 2; j++){
-            if(words[i][j] != words[i][words[i].length() - 1 - j]){
-                v = 0;
-                break;
-            }
-        }
-        if(v == 1 && words[i].length() >= minLength){
-            result.push_back(words[i]);
-        }
-        v = 1;
+bool isPalindrom(string s){
+    for(int i = 0; i < s.length() / 2; i++){
+        if(s[i] != s[s.length() - 1 - i])
+            return false;
     }
-    return result;
+    return true;
 }
+
 //
 int main(){
-    vector <string> words = {"code", "bbabb", "bbbb"};
-    vector <string> result;
-    result = PalindromFilter(words, 3);
-    for(int i = 0; i < result.size(); i++){
-        cout << result[i] << ' ';
-    }
+    string s;
+    cin >> s;
+    cout <<  isPalindrom(s);
     return 0;
 }
