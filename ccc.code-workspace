@@ -1,0 +1,18 @@
+{
+	"folders": [
+		{
+			"path": "C:\\Users\\s8\\Documents\\cpp\\coursera_cpp_white"
+		},
+		{
+			"path": "C:\\Users\\s8\\Documents\\cpp\\coursera_cpp_white\\coursera_cpp_white",
+			"name": "coursera_cpp_white"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"utility": "cpp",
+			"xstring": "cpp",
+			"iostream": "cpp"
+		}
+	}
+}

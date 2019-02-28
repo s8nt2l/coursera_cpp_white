@@ -36,8 +36,8 @@ int main(){
         else if(c == "WORRY_COUNT"){
             int count = 0;
             for(int i = 0; i < list.size(); i++)
-                count += 1 * list[i].isWorry;
-            cout << count;
+                count += list[i].isWorry;
+            cout << count << endl;
         }
             
     }

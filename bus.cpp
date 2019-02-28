@@ -4,9 +4,17 @@
 #include <map>
 using namespace std;
 
+vector<string> sort_at_time(vector<string> sourse, vector<string> result){
+    for(int i = 0; i < sourse.size(); i++)
+        if(find(result.begin(), result.end(), sourse[i]) == result.end())
+            sourse.erase(sourse.begin() + i);
+    return sourse;
+}
+
 int main(){
     map <string, vector <string>> bus_db;
     string command, bus, stop;
+    vector<string> positions, res;
     int stop_count;
     int n;
     cin >> n;
@@ -18,6 +26,7 @@ int main(){
             bus_db[bus].resize(stop_count);
             for(int i = 0; i < stop_count; i++)
                 cin >> bus_db[bus][i];            
+            positions.push_back(bus);
         }
         else if(command == "BUSES_FOR_STOP"){
             cin >> stop;
@@ -30,7 +39,11 @@ int main(){
             else{                
                 for(auto c : bus_db)
                     if(find(c.second.begin(), c.second.end(), stop) != c.second.end())
-                        cout << c.first << ' ';
+                        res.push_back(c.first);
+                res = sort_at_time(positions, res);
+                for(const auto& c : res)
+                    cout << c << ' ';
+                res.clear();
                 cout << endl;
             }
         }
@@ -61,45 +74,17 @@ int main(){
         }
         else if(command == "ALL_BUSES"){
             if(bus_db.size() == 0)
-                cout << "0 buses" << endl;
+                cout << "No buses" << endl;
             else{                
                 for(auto c : bus_db){
                     cout << "Bus " << c.first << ": ";
                     for(auto w : c.second)
                         cout << w << ' ';
                     cout << endl;
-            }
+                }
             }
         }
-
-
     }
+    system("pause");
     return 0;
 }
-/*
-10
-ALL_BUSES
-BUSES_FOR_STOP Marushkino
-STOPS_FOR_BUS 32K
-NEW_BUS 32 3 Tolstopaltsevo Marushkino Vnukovo
-NEW_BUS 32K 6 Tolstopaltsevo Marushkino Vnukovo Peredelkino Solntsevo Skolkovo
-BUSES_FOR_STOP Vnukovo
-NEW_BUS 950 6 Kokoshkino Marushkino Vnukovo Peredelkino Solntsevo Troparyovo
-NEW_BUS 272 4 Vnukovo Moskovsky Rumyantsevo Troparyovo
-STOPS_FOR_BUS 272
-ALL_BUSES
-
-
-o buses
-No stop
-No bus
-32 32K
-Stop Vnukovo: 32 32K 950
-Stop Moskovsky: no interchange
-Stop Rumyantsevo: no interchange
-Stop Troparyovo: 950
-Bus 272: Vnukovo Moskovsky Rumyantsevo Troparyovo
-Bus 32: Tolstopaltsevo Marushkino Vnukovo
-Bus 32K: Tolstopaltsevo Marushkino Vnukovo Peredelkino Solntsevo Skolkovo
-Bus 950: Kokoshkino Marushkino Vnukovo Peredelkino Solntsevo Troparyovo
-*/
