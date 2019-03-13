@@ -44,30 +44,32 @@ bool operator<(const Date& lhs, const Date& rhs){
         } else return lhs.GetMonth() < rhs.GetMonth();
     }
     return lhs.GetYear() < rhs.GetYear();
+    //return lhs.GetMonth() * 1000 + lhs.GetMonth() * 60 + lhs.GetDay() < rhs.GetMonth() * 1000 + rhs.GetMonth() * 60 + rhs.GetDay(); 
 }
 
 
 istream& operator>>(istream& stream, Date& date){
     int year, month, day;
     try{
-        stream >> year;
+        if(!(stream >> year))
+            throw invalid_argument("Wrong date format: " + error);
         peekCheck(stream);
         stream.ignore(1);
-
-        stream >> month;
-        if(month < 1 || month > 12)
-            throw invalid_argument("Month value is invalid: " + to_string(month));
+        if(!(stream >> month))
+            throw invalid_argument("Wrong date format: " + error);
         peekCheck(stream);
         stream.ignore(1);
-
-        stream >> day;
+        if(!(stream >> day))
+            throw invalid_argument("Wrong date format: " + error);
         if(stream.peek() != ' ' && stream.peek() != EOF)
             throw invalid_argument("Wrong date format: " + error);
+        if(month < 1 || month > 12)
+            throw invalid_argument("Month value is invalid: " + to_string(month));
         if(day < 1 || day > 31)
             throw invalid_argument("Day value is invalid: " + to_string(day));
         date = {year, month, day};
     } catch(exception& ex){
-        cout << ex.what();
+        cout << ex.what() << endl;
         exit(0);
     }
     return stream;
@@ -93,12 +95,16 @@ public:
     }
 
 	int DeleteDate(const Date& date){
+        if(db.find(date) == db.end())
+            return 0;
         int i = db[date].size();
         db.erase(date);
         return i;
     }
 
 	void Find(const Date& date) const{
+        if(db.find(date) == db.end())
+            exit(0);
         for(const auto& c : db.at(date))
             cout << c << endl;
     }
@@ -111,9 +117,8 @@ public:
 
 	void Print() const{
         for(const auto& c : db){
-            cout << c.first;
             for(const auto& w : c.second)
-                cout << ' ' << w;
+                cout << c.first << ' ' << w << endl;
             cout << endl;
         }
     }
@@ -148,7 +153,7 @@ int main() {
         else if(cmd == "Del"){
             command_stream >> date;
             if(command_stream.peek() == EOF){
-                int i = 0; i += db.DeleteDate(date);
+                int i = db.DeleteDate(date);
                 cout << "Deleted " << i << " events" << endl;
                 //cout << date << endl;
             }
